@@ -1,7 +1,7 @@
 ; Configure Vampire Boot
 ; ----------------------
 ;
-; Date: 2017-06-17
+; Date: 2017-06-19
 ; Author: Henrik Noerfjand Stengaard
 ;
 ; Script to configure vampire boot
@@ -13,7 +13,7 @@ LAB mainmenu
 
 echo "Boot device: " NOLINE >T:mainmenu
 IF EXISTS "SYS:Prefs/Env-Archive/BootDevice"
-  set bootdevice=`type "SYS:Prefs/Env-Archive/BootDevice"`
+  set bootdevice `type "SYS:Prefs/Env-Archive/BootDevice"`
   echo "$bootdevice" >>T:mainmenu
 ELSE
   echo "N/A" >>T:mainmenu
@@ -74,9 +74,12 @@ SKIP BACK mainmenu
 ; -------------------
 
 LAB rebuilddevicelist
-  `execute S:buildddevicelist`
+`execute S:BuildMountlist`
 SKIP BACK mainmenu
 
+
+; Auto Boot Device
+; ----------------
 
 LAB autobootdevice
 
