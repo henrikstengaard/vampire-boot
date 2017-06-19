@@ -22,17 +22,31 @@ IF NOT EXISTS DEVS:Mountlist
 ENDIF
 
 
-; Execute configure boot, if auto boot device doesn't exist
+; Execute configure vampire boot, if auto boot device doesn't exist
 IF NOT EXISTS "SYS:Prefs/Env-Archive/AutoBootDevice"
-  execute S:Configure-Boot
+  execute S:Configure-VampireBoot
 ENDIF
 
 
+; Reboot, if boot device doesn't exist
+IF NOT EXISTS "SYS:Prefs/Env-Archive/BootDevice"
+  REQUESTCHOICE "Error" "Error: Boot device doesn't exist!" "OK" >NIL: 
+  reboot
+ENDIF
+
+
+; Reboot, if boot device is not defined
 set bootdevice `type "SYS:Prefs/Env-Archive/BootDevice"`
 IF "$bootdevice" EQ ""
   REQUESTCHOICE "Error" "Error: Boot device is not defined!" "OK" >NIL: 
   reboot
 ENDIF
+
+
+; Mount devices in mountlist
+C:MakeDir >NIL: T:SDMount
+Copy >NIL: DEVS:Mountlist T:SDMount
+Mount >NIL: T:SDMount/~(#?.info) 
 
 
 ; Remove assigns
