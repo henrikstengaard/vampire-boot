@@ -1,0 +1,93 @@
+.KEY mountlistfile/a
+.BRA {
+.KET }
+
+; Patch Mountlist
+; ---------------
+; Author: Henrik Noerfjand Stengaard
+; Date: 2017-06-18
+;
+; This script sets or adds a parameter to a section within an ini file.
+
+; Fail, if mountlist file doesn't exist
+IF NOT EXISTS "{mountlistfile}"
+  SKIP end
+ENDIF
+
+; Initialize variables
+set linescount `wc -l <"{mountlistfile}"`
+set linenumber 1
+set filesystem ""
+
+; Create new mountlist file
+echo "" NOLINE >T:_mountlist
+
+; Iterate through mountlist file lines
+LAB start
+IF NOT $linenumber gt $linescount VAL
+  ; Get line number from mountlist file
+  echo "$linenumber" >T:_linenumber
+  set lineregexp `sed "s/\(.\)*$/\1q;d/" T:_linenumber`
+  sed "$lineregexp" "{mountlistfile}" >T:_mountlistline
+
+
+  ; Check if line contains fileSystem 
+  search T:_mountlistline "FileSystem " >NIL:
+  IF NOT WARN  
+    SKIP next
+  ENDIF
+
+
+  ; Check if line contains dostype
+  search T:_mountlistline "DosType " >NIL:
+  IF NOT WARN  
+    ; Check if line contains FFS dostype
+    search T:_mountlistline "0x444f5303" >NIL:
+    IF NOT WARN
+      set filesystem "L:FastFileSystem"
+    ENDIF
+    
+    ; Check if line contains PFS3 dostype
+    search T:_mountlistline "0x50465303" >NIL:
+    IF NOT WARN
+      set filesystem "L:pfs_aio-handler"
+    ENDIF
+    
+    ; Check if line contains FAT dostype
+    search T:_mountlistline "0x46415401" >NIL:
+    IF NOT WARN
+      set filesystem "L:fat95"
+    ENDIF
+  ENDIF
+
+
+  ; Check if line contains #
+  search T:_mountlistline "#" >NIL:
+  IF NOT WARN
+    echo "FileSystem = $filesystem" >>T:_mountlist
+  ENDIF
+
+  ; Copy line to new mountlist
+  type T:_inifileline >>T:_mountlist
+
+  LAB next
+  set linenumber `eval $linenumber + 1`
+  SKIP BACK start
+ENDIF
+
+; Update mountlist file with new mountlist file
+copy >NIL: T:_mountlist "{mountlistfile}"
+
+; End
+LAB end
+
+; Delete temp files, if they exist
+IF EXISTS T:_linenumber
+  delete >NIL: T:_linenumber
+ENDIF
+IF EXISTS T:_mountlistline
+  delete >NIL: T:_mountlistline
+ENDIF
+IF EXISTS T:_mountlist
+  delete >NIL: T:_mountlist
+ENDIF

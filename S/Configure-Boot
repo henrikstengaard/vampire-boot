@@ -1,0 +1,98 @@
+; Configure Vampire Boot
+; ----------------------
+;
+; Date: 2017-06-17
+; Author: Henrik Noerfjand Stengaard
+;
+; Script to configure vampire boot
+
+
+; Main Menu
+; ---------
+LAB mainmenu
+
+echo "Boot device: " NOLINE >T:mainmenu
+IF EXISTS "SYS:Prefs/Env-Archive/BootDevice"
+  set bootdevice=`type "SYS:Prefs/Env-Archive/BootDevice"`
+  echo "$bootdevice" >>T:mainmenu
+ELSE
+  echo "N/A" >>T:mainmenu
+ENDIF
+echo "Rebuild device list" >>T:mainmenu
+echo "Auto boot device: " NOLINE >>T:mainmenu
+IF EXISTS "SYS:Prefs/Env-Archive/AutoBootDevice"
+  echo "YES" >>T:mainmenu
+ELSE
+  echo "NO" >>T:mainmenu
+ENDIF
+echo "Exit" >>T:mainmenu
+
+; Show main menu
+C:ReqList CLONERT BUTTONS I T:mainmenu O ENV:mainmenu H "Configure Vampire Boot"
+delete >NIL: T:mainmenu
+
+; Boot device
+IF "$mainmenu" eq "1" 
+  SKIP bootdevice
+ENDIF 
+
+; Rebuild device list
+IF "$mainmenu" eq "2" 
+  SKIP rebuilddevicelist
+ENDIF
+
+; Auto boot device
+IF "$mainmenu" eq "3" 
+  SKIP autobootdevice
+ENDIF
+
+SKIP end
+
+
+; Boot device
+; -----------
+
+LAB bootdevice
+
+IF NOT EXISTS "DEVS:Mountlist"
+  REQUESTCHOICE "Error" "Mountlist 'DEVS:Mountlist' doesn't exist!*N*NTry rebuild device list" "OK" >NIL: 
+  SKIP BACK mainmenu
+ENDIF
+
+grep ":$" <DEVS:Mountlist >T:bootdevicemenu
+
+; Show boot device menu
+C:ReqList CLONERT BUTTONS I T:bootdevicemenu O ENV:bootdevicemenu H "Boot device"
+delete >NIL: T:bootdevicemenu
+
+echo "$bootdevicemenu" >"SYS:Prefs/Env-Archive/BootDevice"
+
+SKIP BACK mainmenu
+
+
+; Rebuild device list
+; -------------------
+
+LAB rebuilddevicelist
+  `execute S:buildddevicelist`
+SKIP BACK mainmenu
+
+
+LAB autobootdevice
+
+IF EXISTS "SYS:Prefs/Env-Archive/AutoBootDevice"
+  delete >NIL: "SYS:Prefs/Env-Archive/AutoBootDevice"
+Else
+  echo "" NOLINE >"SYS:Prefs/Env-Archive/AutoBootDevice"
+EndIF 
+
+SKIP BACK mainmenu
+
+
+; End
+; ---
+
+echo "Rebooting in 10 seconds"
+
+wait 10
+reboot

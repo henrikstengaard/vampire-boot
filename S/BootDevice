@@ -1,0 +1,25 @@
+.KEY device/a
+.BRA { 
+.KET } 
+
+; Boot Device
+; -----------
+;
+; Date: 2017-06-15
+; Author: Henrik Noerfjand Stengaard
+;
+; Script to boot device to change between partitions to boot from during startup
+
+{device}:C/Assign SYS: {device}:
+SYS:C/Assign C: SYS:C
+Path C:
+Assign System: SYS:System
+Assign S: SYS:S
+Assign L: SYS:L
+Assign LIBS: SYS:Libs
+Assign DEVS: SYS:Devs
+Assign Fonts: SYS:Fonts
+Assign ENVARC: SYS:Prefs/Env-Archive
+CD SYS:
+Execute >NIL: S:Startup-Sequence
+EndCLI >NIL:
