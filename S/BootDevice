@@ -13,7 +13,6 @@
 {device}:C/Assign SYS: {device}:
 SYS:C/Assign C: SYS:C
 Path C:
-Assign System: SYS:System
 Assign S: SYS:S
 Assign L: SYS:L
 Assign LIBS: SYS:Libs
