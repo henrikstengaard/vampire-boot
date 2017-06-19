@@ -1,0 +1,9 @@
+; Build Mountlist
+; ---------------
+; Author: Henrik Noerfjand Stengaard
+; Date: 2017-06-19
+;
+; This script builds mountlist.
+
+GiggleDisk DEVICE=DEVS:sagasd.device TO=DEVS:Mountlist
+execute S:PatchMountlist DEVS:Mountlist
