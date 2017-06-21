@@ -110,6 +110,7 @@ SKIP BACK mainmenu
 ; ------
 LAB reboot
 
+echo ""
 echo "Rebooting in 10 seconds"
 
 wait 10
