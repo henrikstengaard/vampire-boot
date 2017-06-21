@@ -5,12 +5,12 @@
 ; Boot Device
 ; -----------
 ;
-; Date: 2017-06-15
+; Date: 2017-06-21
 ; Author: Henrik Noerfjand Stengaard
 ;
 ; Script to boot device to change between partitions to boot from during startup
 
-{device}:C/Assign SYS: {device}:
+{device}C/Assign SYS: {device}
 SYS:C/Assign C: SYS:C
 Path C:
 Assign S: SYS:S
