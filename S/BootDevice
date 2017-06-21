@@ -13,12 +13,35 @@
 {device}C/Assign SYS: {device}
 SYS:C/Assign C: SYS:C
 Path C:
-Assign S: SYS:S
-Assign L: SYS:L
-Assign LIBS: SYS:Libs
-Assign DEVS: SYS:Devs
-Assign Fonts: SYS:Fonts
-Assign ENVARC: SYS:Prefs/Env-Archive
+
+IF EXISTS SYS:S
+  Assign S: SYS:S
+ENDIF
+
+IF EXISTS SYS:L
+  Assign L: SYS:L
+ENDIF
+
+IF EXISTS SYS:Libs
+  Assign LIBS: SYS:Libs
+ENDIF
+
+IF EXISTS SYS:Devs
+  Assign DEVS: SYS:Devs
+ENDIF
+
+IF EXISTS SYS:Fonts
+  Assign Fonts: SYS:Fonts
+ENDIF
+
+IF EXISTS SYS:Prefs/Env-Archive
+  Assign ENVARC: SYS:Prefs/Env-Archive
+ENDIF
+
 CD SYS:
-Execute >NIL: S:Startup-Sequence
+
+IF EXISTS SYS:S/Startup-Sequence
+  Execute >NIL: SYS:S/Startup-Sequence
+ENDIF
+
 EndCLI >NIL:
