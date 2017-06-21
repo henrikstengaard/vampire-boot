@@ -1,10 +1,17 @@
 ; Build Mountlist
 ; ---------------
 ; Author: Henrik Noerfjand Stengaard
-; Date: 2017-06-19
+; Date: 2017-06-21
 ;
-; This script builds mountlist.
+; This script builds mountlist using GiggleDisk.
 
-;GiggleDisk DEVICE=DEVS:sagasd.device TO=DEVS:Mountlist
-GiggleDisk DEVICE=DEVS:scsi.device TO=DEVS:Mountlist
+; Build mountlist from sagasd.device, if Vampire card is detected. Otherwise build mountlist from scsi.device
+VampireTool CHECK
+IF $RC EQ 0
+  GiggleDisk DEVICE=DEVS:sagasd.device TO=DEVS:Mountlist
+ELSE
+  GiggleDisk DEVICE=DEVS:scsi.device TO=DEVS:Mountlist
+ENDIF
+
+; Patch mountlist
 execute S:PatchMountlist DEVS:Mountlist
