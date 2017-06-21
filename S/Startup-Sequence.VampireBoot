@@ -10,6 +10,29 @@ echo "*ec"
 echo "Vampire Boot"
 
 
+; Set default stack and failat
+stack 16384
+failat 21
+
+
+; Add assigns
+C:MakeDir >NIL: RAM:T RAM:ENV RAM:ENV/Sys
+Assign >NIL: ENV: RAM:Env
+C:Copy ENVARC:~(#?.info) ENV: ALL QUIET
+Assign >NIL: T: RAM:T
+
+
+; Delete auto boot device, if V key is pressed (rawkey code 52)
+KeyPressed 52
+IF WARN
+  IF EXISTS "SYS:Prefs/Env-Archive/AutoBootDevice"
+    Delete >NIL: "SYS:Prefs/Env-Archive/AutoBootDevice"
+    echo ""
+    echo "Disabled auto boot device!"
+  ENDIF
+ENDIF
+
+
 ; Show continue dialog, if Vampire card is not detected
 VampireTool CHECK
 IF NOT $RC EQ 0
@@ -20,23 +43,16 @@ IF NOT $RC EQ 0
 ENDIF
 
 
-; Add assigns
-C:MakeDir >NIL: RAM:T RAM:ENV RAM:ENV/Sys
-Assign >NIL: ENV: RAM:Env
-C:Copy ENVARC:~(#?.info) ENV: ALL QUIET
-Assign >NIL: T: RAM:T
-
-
 ; Build mount list, if it doesn't exist
 IF NOT EXISTS DEVS:Mountlist
   echo ""
-  echo "Buiding mountlist..."
+  echo "Building mountlist..."
   execute S:BuildMountlist
   echo "Done"
 ENDIF
 
 
-; Execute configure vampire boot, if auto boot device doesn't exist
+; Run configure vampire boot, if auto boot device doesn't exist
 IF NOT EXISTS "SYS:Prefs/Env-Archive/AutoBootDevice"
   execute S:Configure-VampireBoot
 ENDIF
