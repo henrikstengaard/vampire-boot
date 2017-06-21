@@ -1,12 +1,23 @@
 ; Startup Sequence for Vampire Boot Installation
 ; ----------------------------------------------
 ;
-; Date: 2017-06-19
+; Date: 2017-06-21
 ; Author: Henrik Noerfjand Stengaard
 
 
 ; Clear screen
 echo "*ec" 
+echo "Vampire Boot"
+
+
+; Show continue dialog, if Vampire card is not detected
+VampireTool CHECK
+IF NOT $RC EQ 0
+  set continue `RequestChoice "Continue" "Vampire card is not detected. Do you want to continue?" "Yes|No"`
+  IF "$continue" EQ "0"
+    QUIT
+  ENDIF
+ENDIF
 
 
 ; Add assigns
@@ -18,7 +29,10 @@ Assign >NIL: T: RAM:T
 
 ; Build mount list, if it doesn't exist
 IF NOT EXISTS DEVS:Mountlist
+  echo ""
+  echo "Buiding mountlist..."
   execute S:BuildMountlist
+  echo "Done"
 ENDIF
 
 
@@ -43,10 +57,15 @@ IF "$bootdevice" EQ ""
 ENDIF
 
 
+echo ""
+echo "Booting device $bootdevice"
+echo ""
+
+
 ; Mount devices in mountlist
-C:MakeDir >NIL: T:SDMount
-Copy >NIL: DEVS:Mountlist T:SDMount
-Mount >NIL: T:SDMount/~(#?.info) 
+C:MakeDir >NIL: T:Mount
+Copy >NIL: DEVS:Mountlist T:Mount
+Mount >NIL: T:Mount/~(#?.info) 
 
 
 ; Remove assigns
