@@ -1,23 +1,17 @@
 ; Configure Vampire Boot
 ; ----------------------
 ;
-; Date: 2017-06-19
+; Date: 2017-06-21
 ; Author: Henrik Noerfjand Stengaard
 ;
-; Script to configure vampire boot
+; A script for configure vampire boot, which presents a menu to configure boot device for Vampire SD card
 
 
 ; Main Menu
 ; ---------
 LAB mainmenu
 
-echo "Boot device: " NOLINE >T:mainmenu
-IF EXISTS "SYS:Prefs/Env-Archive/BootDevice"
-  set bootdevice `type "SYS:Prefs/Env-Archive/BootDevice"`
-  echo "$bootdevice" >>T:mainmenu
-ELSE
-  echo "N/A" >>T:mainmenu
-ENDIF
+echo "Select boot device" >T:mainmenu
 echo "Rebuild device list" >>T:mainmenu
 echo "Auto boot device: " NOLINE >>T:mainmenu
 IF EXISTS "SYS:Prefs/Env-Archive/AutoBootDevice"
@@ -25,15 +19,23 @@ IF EXISTS "SYS:Prefs/Env-Archive/AutoBootDevice"
 ELSE
   echo "NO" >>T:mainmenu
 ENDIF
-echo "Exit" >>T:mainmenu
+echo "Boot device: " NOLINE >>T:mainmenu
+IF EXISTS "SYS:Prefs/Env-Archive/BootDevice"
+  set bootdevice `type "SYS:Prefs/Env-Archive/BootDevice"`
+  echo "$bootdevice" >>T:mainmenu
+ELSE
+  echo "N/A" >>T:mainmenu
+ENDIF
+echo "CLI" >>T:mainmenu
+echo "Reboot" >>T:mainmenu
 
 ; Show main menu
 C:ReqList CLONERT BUTTONS I T:mainmenu O ENV:mainmenu H "Configure Vampire Boot"
 delete >NIL: T:mainmenu
 
-; Boot device
+; Select Boot device
 IF "$mainmenu" eq "1" 
-  SKIP bootdevice
+  SKIP selectbootdevice
 ENDIF 
 
 ; Rebuild device list
@@ -46,26 +48,38 @@ IF "$mainmenu" eq "3"
   SKIP autobootdevice
 ENDIF
 
-SKIP end
-
-
 ; Boot device
-; -----------
+IF "$mainmenu" eq "4" 
+  SKIP end
+ENDIF 
 
-LAB bootdevice
+; CLI
+IF "$mainmenu" eq "5" 
+  QUIT
+ENDIF
+
+SKIP reboot
+
+
+; Select boot device
+; ------------------
+
+LAB selectbootdevice
 
 IF NOT EXISTS "DEVS:Mountlist"
   REQUESTCHOICE "Error" "Mountlist 'DEVS:Mountlist' doesn't exist!*N*NTry rebuild device list" "OK" >NIL: 
   SKIP BACK mainmenu
 ENDIF
 
-grep ":$" <DEVS:Mountlist >T:bootdevicemenu
+; Build select boot device menu from device names in mount list
+set bootdevicemenu `grep ":$" <DEVS:Mountlist`
+echo "$bootdevicemenu" >T:bootdevicemenu
 
-; Show boot device menu
-C:ReqList CLONERT BUTTONS I T:bootdevicemenu O ENV:bootdevicemenu H "Boot device"
+; Show select boot device menu
+C:ReqList CLONERT BUTTONS I T:bootdevicemenu O ENV:bootdevicemenu H "Select Boot Device"
+set lineregexp `sed "s/\(.\)*$/\1q;d/" ENV:bootdevicemenu`
+sed "$lineregexp" "T:bootdevicemenu" >"SYS:Prefs/Env-Archive/BootDevice"
 delete >NIL: T:bootdevicemenu
-
-echo "$bootdevicemenu" >"SYS:Prefs/Env-Archive/BootDevice"
 
 SKIP BACK mainmenu
 
@@ -92,10 +106,16 @@ EndIF
 SKIP BACK mainmenu
 
 
-; End
-; ---
+; Reboot
+; ------
+LAB reboot
 
 echo "Rebooting in 10 seconds"
 
 wait 10
 reboot
+
+
+; End
+; ---
+LAB end
