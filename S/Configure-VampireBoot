@@ -11,31 +11,24 @@
 ; ---------
 LAB mainmenu
 
-echo "Select boot device" >T:mainmenu
-echo "Rebuild device list" >>T:mainmenu
-echo "Auto boot device: " NOLINE >>T:mainmenu
-IF EXISTS "SYS:Prefs/Env-Archive/AutoBootDevice"
-  echo "YES" >>T:mainmenu
-ELSE
-  echo "NO" >>T:mainmenu
-ENDIF
-echo "Boot device: " NOLINE >>T:mainmenu
+echo "Boot device: " NOLINE >T:mainmenu
 IF EXISTS "SYS:Prefs/Env-Archive/BootDevice"
   set bootdevice `type "SYS:Prefs/Env-Archive/BootDevice"`
   echo "$bootdevice" >>T:mainmenu
 ELSE
   echo "N/A" >>T:mainmenu
 ENDIF
+echo "Rebuild device list" >>T:mainmenu
 echo "CLI" >>T:mainmenu
-echo "Reboot" >>T:mainmenu
+echo "Exit" >>T:mainmenu
 
 ; Show main menu
 C:ReqList CLONERT BUTTONS I T:mainmenu O ENV:mainmenu H "Configure Vampire Boot"
 delete >NIL: T:mainmenu
 
-; Select Boot device
+; Boot device
 IF "$mainmenu" eq "1" 
-  SKIP selectbootdevice
+  SKIP bootdevice
 ENDIF 
 
 ; Rebuild device list
@@ -43,28 +36,18 @@ IF "$mainmenu" eq "2"
   SKIP rebuilddevicelist
 ENDIF
 
-; Auto boot device
-IF "$mainmenu" eq "3" 
-  SKIP autobootdevice
-ENDIF
-
-; Boot device
-IF "$mainmenu" eq "4" 
-  SKIP end
-ENDIF 
-
 ; CLI
-IF "$mainmenu" eq "5" 
+IF "$mainmenu" eq "3" 
   QUIT
 ENDIF
 
 SKIP reboot
 
 
-; Select boot device
-; ------------------
+; Boot device
+; -----------
 
-LAB selectbootdevice
+LAB bootdevice
 
 IF NOT EXISTS "DEVS:Mountlist"
   REQUESTCHOICE "Error" "Mountlist 'DEVS:Mountlist' doesn't exist!*N*NTry rebuild device list" "OK" >NIL: 
@@ -74,6 +57,7 @@ ENDIF
 ; Build select boot device menu from device names in mount list
 set bootdevicemenu `grep ":$" <DEVS:Mountlist`
 echo "$bootdevicemenu" >T:bootdevicemenu
+rep T:bootdevicemenu " " "*N"
 
 ; Show select boot device menu
 C:ReqList CLONERT BUTTONS I T:bootdevicemenu O ENV:bootdevicemenu H "Select Boot Device"
@@ -88,21 +72,9 @@ SKIP BACK mainmenu
 ; -------------------
 
 LAB rebuilddevicelist
+echo "Rebuilding device list..."
 `execute S:BuildMountlist`
-SKIP BACK mainmenu
-
-
-; Auto Boot Device
-; ----------------
-
-LAB autobootdevice
-
-IF EXISTS "SYS:Prefs/Env-Archive/AutoBootDevice"
-  delete >NIL: "SYS:Prefs/Env-Archive/AutoBootDevice"
-Else
-  echo "" NOLINE >"SYS:Prefs/Env-Archive/AutoBootDevice"
-EndIF 
-
+echo "Done"
 SKIP BACK mainmenu
 
 
@@ -111,7 +83,7 @@ SKIP BACK mainmenu
 LAB reboot
 
 echo ""
-echo "Rebooting in 10 seconds"
+echo "Rebooting in 10 seconds..."
 
 wait 10
 reboot
