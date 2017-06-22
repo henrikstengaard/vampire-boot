@@ -1,10 +1,16 @@
 ; Configure Vampire Boot
 ; ----------------------
 ;
-; Date: 2017-06-21
+; Date: 2017-06-22
 ; Author: Henrik Noerfjand Stengaard
 ;
 ; A script for configure vampire boot, which presents a menu to configure boot device for Vampire SD card
+
+
+; Build mountlist, if mountlist doesn't exist
+IF NOT EXISTS "DEVS:Mountlist"
+  SKIP buildmountlist
+ENDIF
 
 
 ; Main Menu
@@ -31,9 +37,9 @@ IF "$mainmenu" eq "1"
   SKIP bootdevice
 ENDIF 
 
-; Rebuild device list
+; Build mountlist
 IF "$mainmenu" eq "2" 
-  SKIP rebuilddevicelist
+  SKIP buildmountlist
 ENDIF
 
 ; CLI
@@ -50,7 +56,7 @@ SKIP reboot
 LAB bootdevice
 
 IF NOT EXISTS "DEVS:Mountlist"
-  REQUESTCHOICE "Error" "Mountlist 'DEVS:Mountlist' doesn't exist!*N*NTry rebuild device list" "OK" >NIL: 
+  REQUESTCHOICE "Error" "Mountlist 'DEVS:Mountlist' doesn't exist!*N*NTry build mountlist" "OK" >NIL: 
   SKIP BACK mainmenu
 ENDIF
 
@@ -68,13 +74,17 @@ delete >NIL: T:bootdevicemenu
 SKIP BACK mainmenu
 
 
-; Rebuild device list
-; -------------------
+; Build mountlist
+; ---------------
 
-LAB rebuilddevicelist
-echo "Rebuilding device list..."
+LAB buildmountlist
+echo "Building mountlist..."
 `execute S:BuildMountlist`
 echo "Done"
+echo "Building mount startup..."
+execute S:BuildMountStartup
+echo "Done"
+wait 2
 SKIP BACK mainmenu
 
 
