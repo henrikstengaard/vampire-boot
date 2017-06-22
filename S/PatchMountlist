@@ -26,10 +26,10 @@ echo "" NOLINE >T:_mountlist
 LAB start
 IF NOT $linenumber gt $linescount VAL
   ; Get line number from mountlist file
-  echo "$linenumber" >T:_linenumber
-  set lineregexp `sed "s/\(.\)*$/\1q;d/" T:_linenumber`
+  echo "$linenumber" NOLINE >T:_linenumber
+  echo "q;d" NOLINE >>T:_linenumber
+  set lineregexp "`type T:_linenumber`"
   sed "$lineregexp" "{mountlistfile}" >T:_mountlistline
-
 
   ; Check if line contains fileSystem 
   search T:_mountlistline "FileSystem " >NIL:
