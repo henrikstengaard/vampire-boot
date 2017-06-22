@@ -1,0 +1,25 @@
+.KEY mountlistfile/a,mountscriptfile/a,
+.BRA {
+.KET }
+
+; Build Mount Startup
+; -------------------
+;
+; Date: 2017-06-22
+; Author: Henrik Noerfjand Stengaard
+;
+; Script to build mount startup that mounts devices from mountlist
+
+; Fail, if mountlist file doesn't exist
+IF NOT EXISTS "{mountlistfile}"
+  SKIP end
+ENDIF
+
+set devicelist `grep ":$" <{mountlistfile}`
+echo "$devicelist" >T:_mountscript1
+rep T:_mountscript1 " " "*N"
+sed "s/^\(.\)/mount \1/" "T:_mountscript1" >"T:_mountscript2"
+sed "s/\(.\)$/\1 FROM *"{mountlistfile}*"/" "T:_mountscript2" >"{mountscriptfile}"
+
+; End
+LAB end
