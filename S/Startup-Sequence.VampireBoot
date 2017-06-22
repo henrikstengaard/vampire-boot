@@ -19,15 +19,20 @@ IF WARN
 ENDIF
 
 
-; Configure vampire boot, if boot device doesn't exist
+; Execute configure vampire boot, if boot device doesn't exist
 IF NOT EXISTS "SYS:Prefs/Env-Archive/BootDevice"
   execute S:Configure-VampireBoot
 ENDIF
 
 
-; TODO: Mount devices in mountlist
-mount dh0:
-mount dh1:
+; Execute configure vampire boot, if mount startup doesn't exist
+IF NOT EXISTS "S:Mount-Startup"
+  execute S:Configure-VampireBoot
+ENDIF
+
+
+; Execute mount startup
+execute S:Mount-Startup
 
 
 ; Get boot device
