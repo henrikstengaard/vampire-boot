@@ -1,7 +1,7 @@
 ; Configure Vampire Boot
 ; ----------------------
 ;
-; Date: 2017-06-22
+; Date: 2017-06-23
 ; Author: Henrik Noerfjand Stengaard
 ;
 ; A script for configure vampire boot, which presents a menu to configure boot device for Vampire SD card
@@ -24,12 +24,12 @@ IF EXISTS "SYS:Prefs/Env-Archive/BootDevice"
 ELSE
   echo "N/A" >>T:mainmenu
 ENDIF
-echo "Rebuild device list" >>T:mainmenu
+echo "Build mountlist" >>T:mainmenu
 echo "CLI" >>T:mainmenu
 echo "Exit" >>T:mainmenu
 
 ; Show main menu
-C:ReqList CLONERT BUTTONS I T:mainmenu O ENV:mainmenu H "Configure Vampire Boot"
+set mainmenu "`C:ReqList CLONERT BUTTONS I=T:mainmenu H="Configure Vampire Boot"`"
 delete >NIL: T:mainmenu
 
 ; Boot device
@@ -66,10 +66,12 @@ echo "$bootdevicemenu" >T:bootdevicemenu
 rep T:bootdevicemenu " " "*N"
 
 ; Show select boot device menu
-C:ReqList CLONERT BUTTONS I T:bootdevicemenu O ENV:bootdevicemenu H "Select Boot Device"
-set lineregexp `sed "s/\(.\)*$/\1q;d/" ENV:bootdevicemenu`
+set bootdeviceselected "`C:ReqList CLONERT BUTTONS I=T:bootdevicemenu H="Select Boot Device"`"
+echo "$bootdeviceselected" NOLINE >T:_bootdeviceselected
+echo "q;d" NOLINE >>T:_bootdeviceselected
+set lineregexp "`type T:_bootdeviceselected`"
 sed "$lineregexp" "T:bootdevicemenu" >"SYS:Prefs/Env-Archive/BootDevice"
-delete >NIL: T:bootdevicemenu
+delete >NIL: T:bootdevicemenu T:_bootdeviceselected
 
 SKIP BACK mainmenu
 
@@ -79,13 +81,12 @@ SKIP BACK mainmenu
 
 LAB buildmountlist
 echo "Building mountlist..."
-`execute S:BuildMountlist`
+execute S:BuildMountlist
 echo "Done"
 echo "Building mount startup..."
-execute S:BuildMountStartup
+execute S:BuildMountStartup S:Mount-Startup
 echo "Done"
-wait 2
-SKIP BACK mainmenu
+SKIP reboot
 
 
 ; Reboot
