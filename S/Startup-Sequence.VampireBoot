@@ -45,6 +45,12 @@ IF "$bootdevice" EQ ""
 ENDIF
 
 
+; Configure vampire boot, if boot device is VB0:
+IF "$bootdevice" EQ "VB0:"
+  execute S:Configure-VampireBoot
+ENDIF
+
+
 Assign SYS: $bootdevice
 Assign C: SYS:C
 Path C:
