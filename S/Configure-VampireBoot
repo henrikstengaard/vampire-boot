@@ -80,12 +80,15 @@ SKIP BACK mainmenu
 ; ---------------
 
 LAB buildmountlist
+echo ""
 echo "Building mountlist..."
 execute S:BuildMountlist
 echo "Done"
 echo "Building mount startup..."
-execute S:BuildMountStartup S:Mount-Startup
+execute S:BuildMountStartup DEVS:Mountlist S:Mount-Startup
 echo "Done"
+echo ""
+ask "Press ENTER to continue"
 SKIP reboot
 
 
