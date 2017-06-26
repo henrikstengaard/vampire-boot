@@ -30,7 +30,7 @@ TODO
 Configure Vampire Boot menu has following options:
 
 - Boot device: Enters select boot device menu.
-- Build mountlist: Builds.
+- Build mountlist: Build mountlist, mount startup and reboots.
 - CLI: Starts CLI for tweaking purposes.
 - Exit: Exit Configure setup.
 
