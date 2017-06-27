@@ -70,6 +70,6 @@ Patch mountlist updates mountlist with filesystem handlers by examining DosType.
 | 0x50465303 | PFS3 | L:pfs_aio-handler |
 | 0x46415401 | FAT32 | L:fat95 |
 
-**Note: Only PFS3 has tested.**
+**Note: Only PFS3 has been tested.**
 
 ![Build mountlist](screenshots/vampire-boot4.png?raw=true)
