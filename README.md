@@ -26,7 +26,7 @@ When Workbench 3.1 system files are installed, Vampire boot will present a Confi
 Vampire boot startup sequence does following during boot:
 
 1. Show Configure Vampire Boot menu if:
-    1. Check if V key is pressed.
+    1. V key is pressed.
     2. Boot device file "SYS:Prefs/Env-Archive/BootDevice" doesn't exist.
     3. Boot device is empty or set to VB0:.
     4. Mount startup file "S:Mount-Startup" doesn't exist.
