@@ -1,7 +1,7 @@
 ; Configure Vampire Boot
 ; ----------------------
 ;
-; Date: 2017-06-26
+; Date: 2017-06-28
 ; Author: Henrik Noerfjand Stengaard
 ;
 ; A script for configure vampire boot, which presents a menu to configure boot device for Vampire SD card
@@ -17,30 +17,30 @@ ENDIF
 ; ---------
 LAB mainmenu
 
-echo "Boot device: " NOLINE >T:mainmenu
+echo "Build mountlist" >T:_mainmenu
+echo "Boot device: " NOLINE >>T:_mainmenu
 IF EXISTS "SYS:Prefs/Env-Archive/BootDevice"
   set bootdevice `type "SYS:Prefs/Env-Archive/BootDevice"`
-  echo "$bootdevice" >>T:mainmenu
+  echo "$bootdevice" >>T:_mainmenu
 ELSE
-  echo "N/A" >>T:mainmenu
+  echo "N/A" >>T:_mainmenu
 ENDIF
-echo "Build mountlist" >>T:mainmenu
-echo "CLI" >>T:mainmenu
-echo "Exit" >>T:mainmenu
+echo "CLI" >>T:_mainmenu
+echo "Exit" >>T:_mainmenu
 
 ; Show main menu
-set mainmenu "`C:ReqList CLONERT BUTTONS I=T:mainmenu H="Configure Vampire Boot"`"
-delete >NIL: T:mainmenu
-
-; Boot device
-IF "$mainmenu" eq "1" 
-  SKIP bootdevice
-ENDIF 
+set mainmenu "`C:ReqList CLONERT BUTTONS I=T:_mainmenu H="Configure Vampire Boot"`"
+delete >NIL: T:_mainmenu
 
 ; Build mountlist
-IF "$mainmenu" eq "2" 
+IF "$mainmenu" eq "1" 
   SKIP buildmountlist
 ENDIF
+
+; Boot device
+IF "$mainmenu" eq "2" 
+  SKIP bootdevice
+ENDIF 
 
 ; CLI
 IF "$mainmenu" eq "3" 
@@ -48,6 +48,29 @@ IF "$mainmenu" eq "3"
 ENDIF
 
 SKIP reboot
+
+
+; Build mountlist
+; ---------------
+
+LAB buildmountlist
+echo ""
+echo "Building mountlist..."
+set temp "`execute S:BuildMountlist`"
+echo "Done"
+echo ""
+echo "Building mount startup..."
+set temp "`execute S:BuildMountStartup DEVS:Mountlist S:Mount-Startup`"
+echo "Done"
+echo ""
+echo "Mountlist and mount startup has been build."
+echo ""
+ask "Press ENTER to continue"
+
+; Clear screen
+echo "*ec" 
+
+SKIP BACK mainmenu
 
 
 ; Boot device
@@ -62,37 +85,24 @@ ENDIF
 
 ; Build select boot device menu from device names in mount list
 set bootdevicemenu `grep ":$" <DEVS:Mountlist`
-echo "$bootdevicemenu" >T:bootdevicemenu
-rep T:bootdevicemenu " " "*N"
+echo "Cancel" >T:_bootdevicemenu
+echo "$bootdevicemenu" >>T:_bootdevicemenu
+rep T:_bootdevicemenu " " "*N"
 
-; Show select boot device menu
-set bootdeviceselected "`C:ReqList CLONERT BUTTONS I=T:bootdevicemenu H="Select Boot Device"`"
-echo "$bootdeviceselected" NOLINE >T:_bootdeviceselected
-echo "q;d" NOLINE >>T:_bootdeviceselected
-set lineregexp "`type T:_bootdeviceselected`"
-sed "$lineregexp" "T:bootdevicemenu" >"SYS:Prefs/Env-Archive/BootDevice"
-delete >NIL: T:bootdevicemenu T:_bootdeviceselected
+; Show boot device menu
+set bootdevice "`C:ReqList CLONERT BUTTONS I=T:_bootdevicemenu H="Boot Device"`"
+IF "$bootdevice" EQ "1"
+  SKIP BACK mainmenu
+ENDIF
+
+; Set boot device
+echo "$bootdevice" NOLINE >T:_bootdevice
+echo "q;d" NOLINE >>T:_bootdevice
+set lineregexp "`type T:_bootdevice`"
+sed "$lineregexp" "T:_bootdevicemenu" >"SYS:Prefs/Env-Archive/BootDevice"
+delete >NIL: T:_bootdevicemenu T:_bootdevice
 
 SKIP BACK mainmenu
-
-
-; Build mountlist
-; ---------------
-
-LAB buildmountlist
-echo ""
-echo "Building mountlist..."
-execute S:BuildMountlist
-echo "Done"
-echo ""
-echo "Building mount startup..."
-execute S:BuildMountStartup DEVS:Mountlist S:Mount-Startup
-echo "Done"
-echo ""
-echo "Mountlist and mount startup has been build and system needs to reboot."
-echo ""
-ask "Press ENTER to continue"
-SKIP reboot
 
 
 ; Reboot
