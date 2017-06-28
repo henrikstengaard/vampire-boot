@@ -1,7 +1,7 @@
 ; Startup Sequence for Vampire Boot
 ; ---------------------------------
 ;
-; Date: 2017-06-22
+; Date: 2017-06-28
 ; Author: Henrik Noerfjand Stengaard
 
 
@@ -31,6 +31,16 @@ IF NOT EXISTS "S:Mount-Startup"
 ENDIF
 
 
+; Execute configure vampire boot, if mount startup contains "VB0:"
+search S:Mount-Startup "VB0:" >NIL:
+IF NOT WARN 
+  echo "ERROR: Vampire boot can't mount device VB0:!"
+  echo "Enter Configure Vampire Boot and select other boot device."
+  echo ""
+  ask "Press ENTER to continue"
+  execute S:Configure-VampireBoot
+ENDIF
+
 ; Execute mount startup
 execute S:Mount-Startup
 
@@ -39,14 +49,22 @@ execute S:Mount-Startup
 set bootdevice "`type SYS:Prefs/Env-Archive/bootdevice`"
 
 
-; Configure vampire boot, if boot device is empty
+; Execute configure vampire boot, if boot device is empty
 IF "$bootdevice" EQ ""
+  echo "ERROR: Boot device is empty!"
+  echo "Enter Configure Vampire Boot and select boot device."
+  echo ""
+  ask "Press ENTER to continue"
   execute S:Configure-VampireBoot
 ENDIF
 
 
-; Configure vampire boot, if boot device is VB0:
+; Execute configure vampire boot, if boot device is VB0:
 IF "$bootdevice" EQ "VB0:"
+  echo "ERROR: Boot device can't be VB0:!"
+  echo "Enter Configure Vampire Boot and select other boot device."
+  echo ""
+  ask "Press ENTER to continue"
   execute S:Configure-VampireBoot
 ENDIF
 
