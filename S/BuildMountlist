@@ -1,7 +1,7 @@
 ; Build Mountlist
 ; ---------------
 ; Author: Henrik Noerfjand Stengaard
-; Date: 2017-06-21
+; Date: 2017-06-28
 ;
 ; This script builds mountlist using GiggleDisk.
 
@@ -14,4 +14,6 @@ ELSE
 ENDIF
 
 ; Patch mountlist
-execute S:PatchMountlist DEVS:Mountlist
+copy >NIL: DEVS:Mountlist RAM:Mountlist
+execute S:PatchMountlist RAM:Mountlist
+copy >NIL: RAM:Mountlist DEVS:Mountlist
