@@ -178,7 +178,7 @@ ENDIF
 ; Replace startup sequence with vampire boot startup sequence
 Rename S:Startup-Sequence S:Startup-Sequence.Install 
 Rename S:Startup-Sequence.VampireBoot S:Startup-Sequence  
-Delete >NIL: S:Startup-Sequence.VampireBoot 
+Delete >NIL: S:Startup-Sequence.Install 
 
 
 ; Clear screen
