@@ -58,7 +58,7 @@ Screenshot of Configure Vampire Boot menu.
 Build mountlist uses GiggleDisk to build mountlist using sagasd.device. It uses VampireTool to detect Vampire card. 
 If Vampire card is installed it uses sagasd.device, otherwise it uses scsi.device as a fallback.
 
-If partitions change or another SD card is installed, then build mountlist and select boot device again.
+If partitions change or another SD card is installed, then redo build mountlist and select boot device again.
 
 Mountlist build by GiggleDisk doesn't have filesystem handlers defined and these are required to mount devices.
 Patch mountlist updates mountlist with filesystem handlers by examining DosType. It currently supports following DosTypes:
