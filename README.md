@@ -81,9 +81,9 @@ Boot Device menu lists devices from mountlist for selecting device to boot durin
 
 This tutorial describes step by step how to run Vampire boot self install in an emulator or on real Amiga.
 
-Self install can be run in following ways:
+Vampire boot self install can be run in following ways:
 
-1. WinUAE: Start WinUAE using an A1200 configuration with Vampire boot HDF added in CD & Hard drives.
+1. WinUAE: Start WinUAE using an A600/A1200 configuration with Vampire boot HDF added in CD & Hard drives.
 2. Real Amiga: Write Vampire boot HDF to CF/SD card using Win32DiskImager and insert CF/SD card in Amiga internal IDE port.
 
 **1. Start Vampire boot self install**.
