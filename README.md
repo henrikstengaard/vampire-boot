@@ -71,13 +71,13 @@ Patch mountlist updates mountlist with filesystem handlers by examining DosType.
 
 **Note: It's only been tested with PFS3 filesystems.**
 
-![vampire_boot_2.png](screenshots/vampire_boot_2.png?raw=true)
+![vampire_boot_3.png](screenshots/vampire_boot_3.png?raw=true)
 
 ### Boot device menu
 
 Boot Device menu lists devices from mountlist for selecting device to boot during startup of Vampire boot.
 
-![vampire_boot_3.png](screenshots/vampire_boot_3.png?raw=true)
+![vampire_boot_4.png](screenshots/vampire_boot_4.png?raw=true)
 
 ## Tutorial 1: Running Vampire boot self install in an emulator or on real Amiga
 
