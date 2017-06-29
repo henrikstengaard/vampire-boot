@@ -1,10 +1,14 @@
 # Vampire boot
 
-Vampire boot is a setup tools and scripts for Amiga to configure, mount and boot partitions on SD-card installed in Apollo Vampire accelerator card. This is required for booting partitions on Vampire SD-card as it currently doesn't automatically boot partitions on SD-card.
+Vampire boot is a ready made HDF image, which can be installed in Amiga internal IDE port and configured to boot a partition on SD-card installed in Apollo Vampire accelerator card. Currently Apollo Vampire accelerator card doesn't support autoboot partitions on SD-card and that's there where Vampire boot comes to aid.
 
-Startup for Vampire boot is done from CF/SD-card installed in A600 internal IDE port. It mounts devices listed in DEVS:mountlist and boots selected partition on Vampire SD-card.
+**Note: It's only been tested with Vampire 600 V2.**
 
-Vampire boot is based on SDMount from SAGA drivers with additional scripts and menu to simplify and automate configuration. This is done using GiggleDisk to build mountlist and patch mountlist to add filesystem handlers by examining DosType.
+## Description
+
+Vampire boot consists of tools and scripts for Amiga to configure, mount and boot partitions on SD-card installed in Apollo Vampire accelerator card. It's based on SDMount from SAGA drivers with additional scripts and menu to simplify and automate configuration. This is done using GiggleDisk to build mountlist and patch mountlist to add filesystem handlers by examining DosType.
+
+Startup for Vampire boot is done from CF/SD-card installed in Amiga internal IDE port. It mounts devices listed in DEVS:mountlist and boots selected partition on Vampire SD-card.
 
 ## Requirements
 
@@ -61,7 +65,7 @@ Patch mountlist updates mountlist with filesystem handlers by examining DosType.
 | 0x50465303 | PFS3 | L:pfs_aio-handler |
 | 0x46415401 | FAT32 | L:fat95 |
 
-**Note: Only PFS3 has been tested.**
+**Note: It's only been tested with PFS3 filesystems.**
 
 ![Build mountlist](screenshots/vampire-boot2.png?raw=true)
 
