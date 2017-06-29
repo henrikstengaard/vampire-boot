@@ -1,16 +1,10 @@
 ; Configure Vampire Boot
 ; ----------------------
 ;
-; Date: 2017-06-28
+; Date: 2017-06-29
 ; Author: Henrik Noerfjand Stengaard
 ;
 ; A script for configure vampire boot, which presents a menu to configure boot device for Vampire SD card
-
-
-; Build mountlist, if mountlist doesn't exist
-IF NOT EXISTS "DEVS:Mountlist"
-  SKIP buildmountlist
-ENDIF
 
 
 ; Main Menu
