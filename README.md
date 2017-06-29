@@ -138,7 +138,7 @@ This tutorial describes step by step how to configure Vampire boot in either an 
 
 Start Vampire boot either in an emulator or a real Amiga.
 
-First time startup will start Configure Vampire Boot menu.
+First time startup will show Configure Vampire Boot menu.
 
 ![vampire_boot_1.png](screenshots/vampire_boot_1.png?raw=true)
 
