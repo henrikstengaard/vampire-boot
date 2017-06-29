@@ -140,17 +140,15 @@ This tutorial describes step by step how to configure Vampire boot in either an 
 
 Start Vampire boot either in an emulator or a real Amiga.
 
-At first time startup Vampire boot builds mountlist and show Configure Vampire Boot menu.
-
 ![vampire_boot_1.png](screenshots/vampire_boot_1.png?raw=true)
-
-![vampire_boot_2.png](screenshots/vampire_boot_2.png?raw=true)
 
 **2. Build mountlist**.
 
-This is optional and can be skipped, if it's a first time startup as mountlist is already build.
-
 Click "Build mountlist" to build mountlist and mount startup.
+
+![vampire_boot_1.png](screenshots/vampire_boot_1.png?raw=true)
+
+Build mountlist is running.
 
 ![vampire_boot_2.png](screenshots/vampire_boot_2.png?raw=true)
 
@@ -164,7 +162,7 @@ Press enter to continue and it will return to main menu.
 
 Click "Boot device" to select boot device.
 
-![vampire_boot_2.png](screenshots/vampire_boot_2.png?raw=true)
+![vampire_boot_1.png](screenshots/vampire_boot_1.png?raw=true)
 
 For this example click "DH0:" to select it as boot device.
 
