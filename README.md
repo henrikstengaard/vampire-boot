@@ -174,6 +174,6 @@ Configuration of Vampire boot is complete.
 
 Click "Exit" to exit Configure Vampire Boot and reboot.
 
-Vampire boot will now mount partitions on SD card in Vampire accelerator card and boot selected boot device.
+Vampire boot will now mount partitions from SD card in Vampire accelerator card and boot selected boot device.
 
 ![vampire_boot_5.png](screenshots/vampire_boot_5.png?raw=true)
