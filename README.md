@@ -108,15 +108,19 @@ Insert required Workbench 3.1 disk in any floppy device and press enter to conti
 
 Workbench 3.1 installation running and copying system files.
 
+![run_self_install_4.png](screenshots/run_self_install_4.png?raw=true)
+
+Workbench 3.1 installation is complete.
+
 Press enter to continue installation process.
 
-![run_self_install_4.png](screenshots/run_self_install_4.png?raw=true)
+![run_self_install_5.png](screenshots/run_self_install_5.png?raw=true)
 
 **4. Eject disk**
 
 Eject Workbench 3.1 disk and press enter to continue installation process.
 
-![run_self_install_5.png](screenshots/run_self_install_5.png?raw=true)
+![run_self_install_6.png](screenshots/run_self_install_6.png?raw=true)
 
 **5. Vampire boot installation complete and reboot**
 
@@ -124,7 +128,7 @@ Vampire boot installation is complete.
 
 Press enter to continue reboot.
 
-![run_self_install_6.png](screenshots/run_self_install_6.png?raw=true)
+![run_self_install_7.png](screenshots/run_self_install_7.png?raw=true)
 
 **6. Vampire boot ready for use**
 
