@@ -181,6 +181,12 @@ Rename S:Startup-Sequence.VampireBoot S:Startup-Sequence
 Delete >NIL: S:Startup-Sequence.Install 
 
 
+; Replace disk info with vampire boot info
+Rename SYS:Disk.info SYS:Disk.info_ 
+Rename SYS:VampireBoot.info SYS:Disk.info  
+Delete >NIL: SYS:Disk.info_ 
+
+
 ; Clear screen
 echo "*ec" 
 
