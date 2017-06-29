@@ -2,7 +2,7 @@
 
 Vampire boot is a ready made HDF image, which can be installed in Amiga internal IDE port and configured to boot a partition on SD card installed in Apollo Vampire accelerator card. Currently Apollo Vampire accelerator card doesn't support autoboot partitions on SD card and that's there where Vampire boot comes to aid.
 
-**Note: It's only been tested with Vampire 600 V2.**
+**Note: It's only been tested with Vampire 600 V2 and a SD card with only PFS3 filesystems.**
 
 ## Description
 
@@ -69,7 +69,7 @@ Patch mountlist updates mountlist with filesystem handlers by examining DosType.
 | 0x50465303 | PFS3 | L:pfs_aio-handler |
 | 0x46415401 | FAT32 | L:fat95 |
 
-**Note: It's only been tested with PFS3 filesystems.**
+**Note: If build mountlist is used in an emulator, it requires chipset extra is set to A600/A1200 and HD controller is set to A600/A1200/A4000 for GiggleDisk to properly detect partitions.**
 
 ![vampire_boot_3.png](screenshots/vampire_boot_3.png?raw=true)
 
@@ -79,9 +79,9 @@ Boot Device menu lists devices from mountlist for selecting device to boot durin
 
 ![vampire_boot_4.png](screenshots/vampire_boot_4.png?raw=true)
 
-## Tutorial 1: Running Vampire boot self install in an emulator or on real Amiga
+## Tutorial 1: Running Vampire boot self install in an emulator or a real Amiga
 
-This tutorial describes step by step how to run Vampire boot self install in an emulator or on real Amiga.
+This tutorial describes step by step how to run Vampire boot self install in an emulator or a real Amiga.
 
 Vampire boot self install can be run in following ways:
 
@@ -126,7 +126,7 @@ Eject Workbench 3.1 disk and press enter to continue installation process.
 
 Vampire boot installation is complete. 
 
-Press enter to continue reboot.
+Press enter to continue and reboot.
 
 ![run_self_install_7.png](screenshots/run_self_install_7.png?raw=true)
 
