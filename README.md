@@ -126,7 +126,7 @@ Press enter to continue reboot.
 
 **6. Vampire boot ready for use**
 
-Vampire boot is now ready for use in a real Amiga.
+Vampire boot is now ready for use and can be configured.
 
 ![vampire_boot_1.png](screenshots/vampire_boot_1.png?raw=true)
 
