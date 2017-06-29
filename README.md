@@ -58,6 +58,8 @@ Screenshot of Configure Vampire Boot menu.
 Build mountlist uses GiggleDisk to build mountlist using sagasd.device. It uses VampireTool to detect Vampire card. 
 If Vampire card is installed it uses sagasd.device, otherwise it uses scsi.device as a fallback.
 
+If partitions change or another SD card is installed, then build mountlist and select boot device again.
+
 Mountlist build by GiggleDisk doesn't have filesystem handlers defined and these are required to mount devices.
 Patch mountlist updates mountlist with filesystem handlers by examining DosType. It currently supports following DosTypes:
 
@@ -138,35 +140,39 @@ This tutorial describes step by step how to configure Vampire boot in either an 
 
 Start Vampire boot either in an emulator or a real Amiga.
 
-First time startup will show Configure Vampire Boot menu.
+At first time startup Vampire boot builds mountlist and show Configure Vampire Boot menu.
 
 ![vampire_boot_1.png](screenshots/vampire_boot_1.png?raw=true)
+
+![vampire_boot_2.png](screenshots/vampire_boot_2.png?raw=true)
 
 **2. Build mountlist**.
 
+This is optional and can be skipped, if it's a first time startup as mountlist is already build.
+
 Click "Build mountlist" to build mountlist and mount startup.
 
-![vampire_boot_1.png](screenshots/vampire_boot_1.png?raw=true)
+![vampire_boot_2.png](screenshots/vampire_boot_2.png?raw=true)
 
 Build mountlist and mount startup is done.
 
 Press enter to continue and it will return to main menu.
 
-![vampire_boot_2.png](screenshots/vampire_boot_2.png?raw=true)
+![vampire_boot_3.png](screenshots/vampire_boot_3.png?raw=true)
 
 **3. Boot device**.
 
 Click "Boot device" to select boot device.
 
-![vampire_boot_1.png](screenshots/vampire_boot_1.png?raw=true)
+![vampire_boot_2.png](screenshots/vampire_boot_2.png?raw=true)
 
 For this example click "DH0:" to select it as boot device.
 
 **Note: Devices listed depend on partitions detected on SD card in Vampire accelerator card.**
 
-![vampire_boot_3.png](screenshots/vampire_boot_3.png?raw=true)
-
 ![vampire_boot_4.png](screenshots/vampire_boot_4.png?raw=true)
+
+![vampire_boot_5.png](screenshots/vampire_boot_5.png?raw=true)
 
 **4. Exit and reboot**.
 
@@ -176,4 +182,4 @@ Click "Exit" to exit Configure Vampire Boot and reboot.
 
 Vampire boot will now mount partitions from SD card in Vampire accelerator card and boot selected boot device.
 
-![vampire_boot_5.png](screenshots/vampire_boot_5.png?raw=true)
+![vampire_boot_6.png](screenshots/vampire_boot_6.png?raw=true)
