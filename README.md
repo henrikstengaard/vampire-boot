@@ -65,9 +65,10 @@ Patch mountlist updates mountlist with filesystem handlers by examining DosType.
 
 | DosType | Filesystem | Handler |
 | --- | --- | --- |
-| 0x444f5303 | FastFileSystem | L:FastFileSystem |
-| 0x50465303 | PFS3 | L:pfs_aio-handler |
-| 0x46415401 | FAT32 | L:fat95 |
+| 0x444f5303 (DOS\3) | Amiga FFS file system (intl., no dir cache) | L:FastFileSystem |
+| 0x50445303 (PDS\3) | Amiga PFS file system 3, SCSIdirect | L:pfs_aio-handler |
+| 0x50465303 (PFS\3) | Amiga PFS file system 3 | L:pfs_aio-handler |
+| 0x46415401 (FAT\1) | FAT32 file system | L:fat95 |
 
 **Note: If build mountlist is used in an emulator, it requires chipset extra is set to A600/A1200 and HD controller is set to A600/A1200/A4000 for GiggleDisk to properly detect partitions.**
 
