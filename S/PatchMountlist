@@ -50,13 +50,13 @@ IF NOT $linenumber gt $linescount VAL
     ; Check if line contains PDS\3 dostype
     search T:_mountlistline "0x50445303" >NIL:
     IF NOT WARN
-      set filesystem "L:pfs_aio-handler"
+      set filesystem "L:pfs3_aio-handler"
     ENDIF
     
     ; Check if line contains PFS\3 dostype
     search T:_mountlistline "0x50465303" >NIL:
     IF NOT WARN
-      set filesystem "L:pfs_aio-handler"
+      set filesystem "L:pfs3_aio-handler"
     ENDIF
 
     ; Check if line contains FAT\1 dostype
